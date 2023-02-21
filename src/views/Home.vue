@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    getTodos:{{ getTodos }}
     <div class="search flex align-center">
       <search-icon />
       <label :class="input_active ? 'active' : ''">
@@ -38,7 +39,7 @@
       />
     </draggable>
     <accordion-child
-      :listGroup="listGroup"
+      :listGroup="documentsList"
       class="mt-4"
       :delayedDragging="delayedDragging"
     />
@@ -52,81 +53,8 @@ import Accordion from "../components/Accordion";
 import AccordionChild from "../components/AccordionChild";
 import SearchIcon from "../components/icons/SearchIcon";
 import RemoveIcon from "../components/icons/RemoveIcon";
-const data = [
-  {
-    id: 100,
-    title: "Обязательные для всех",
-    description: "Документы, обязательные для всех сотрудников без исключения",
-    list: [
-      {
-        id: 1000,
-        title: "Паспорт",
-        required: true,
-        forAll: true,
-      },
-      {
-        id: 1001,
-        title: "ИНН",
-        required: true,
-        forAll: true,
-      },
-    ],
-  },
-  {
-    id: 101,
-    title: "Обязательные для трудоустройства",
-    description: "Документы, обязательные для всех сотрудников без исключения",
-    list: [
-      {
-        id: 1002,
-        title: "Паспорт",
-        required: true,
-        forAll: true,
-      },
-      {
-        id: 1003,
-        title: "ИНН",
-        required: true,
-        forAll: true,
-      },
-    ],
-  },
-  {
-    id: 102,
-    title: "Специальные",
-    description: "Документы, обязательные для всех сотрудников без исключения",
-    list: [
-      {
-        id: 1003,
-        title: "Паспорт",
-        required: true,
-        forAll: true,
-      },
-      {
-        id: 1004,
-        title: "ИНН",
-        required: true,
-        forAll: true,
-      },
-    ],
-  },
-];
-const list_group = [
-  {
-    id: 1100,
-    title: "Тестовое задание кандидата",
-    description:
-      "Россия, Белоруссия, Украина, администратор филиала, повар-сушист, повар-пиццмейкер, повар горячего цеха",
-  },
-  {
-    id: 1101,
-    title: "Трудовой договор",
-  },
-  {
-    id: 1102,
-    title: "Мед. книжка",
-  },
-];
+import { mapGetters } from "vuex";
+
 export default {
   name: "Home",
   components: {
@@ -139,8 +67,7 @@ export default {
   },
   data() {
     return {
-      list: data,
-      listGroup: list_group,
+      list: [],
       isDragging: false,
       delayedDragging: false,
       delayedDrag: false,
@@ -158,8 +85,9 @@ export default {
     },
   },
   computed: {
+    ...mapGetters(["documentsListCategories", "documentsList"]),
     filteredList() {
-      return this.list.filter((item) => {
+      return this.documentsListCategories.filter((item) => {
         return (item.title + item.description)
           .toLowerCase()
           .includes(this.search.toLowerCase());
@@ -177,7 +105,6 @@ export default {
       return JSON.stringify(this.list, null, 2);
     },
   },
-
   watch: {
     isDragging(newValue) {
       if (newValue) {
