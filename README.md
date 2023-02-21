@@ -1,5 +1,12 @@
 # foquz-ui
-
+## node version
+```
+v14.17.3
+```
+## npm version
+```
+6.14.13
+```
 ## Project setup
 ```
 npm install
