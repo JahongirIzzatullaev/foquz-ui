@@ -25,7 +25,13 @@
         </span>
       </div>
     </div>
-    <list-group :listGroup="data.list" :isShowAccordion="isShowAccordion" />
+    <accordion-child
+      :listGroup="data.list"
+      :isShowAccordion="isShowAccordion"
+      @delayedDrag="delayedDrag"
+      :delayedDragging="delayedDragging"
+      class="ml-5"
+    />
   </div>
 </template>
 
@@ -35,12 +41,12 @@ import draggable from "vuedraggable";
 import AccordionIcon from "./icons/AccordionIcon";
 import EditIcon from "./icons/EditIcon";
 import DeleteIcon from "./icons/DeleteIcon";
-import ListGroup from "./ListGroup";
+import AccordionChild from "./AccordionChild";
 
 export default {
-  name: "AccordionItems",
+  name: "Accordion",
   components: {
-    ListGroup,
+    AccordionChild,
     DeleteIcon,
     EditIcon,
     AccordionIcon,
@@ -67,6 +73,9 @@ export default {
   methods: {
     toggleAccordion() {
       this.isShowAccordion = !this.isShowAccordion;
+    },
+    delayedDrag(data) {
+      this.$emit("delayed", data);
     },
   },
 };
@@ -95,6 +104,12 @@ export default {
   span:last-child {
     margin-left: 15px;
   }
+}
+.accordion-title {
+  font-weight: 600;
+  font-size: 15px;
+  line-height: 108%;
+  color: #000000;
 }
 .accordion-description {
   margin-left: 15px;
