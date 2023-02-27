@@ -1,6 +1,5 @@
 <template>
   <div class="main">
-    getTodos:{{ getTodos }}
     <div class="search flex align-center">
       <search-icon />
       <label :class="input_active ? 'active' : ''">
