@@ -30,7 +30,7 @@
       :animation="300"
     >
       <accordion
-        v-for="item in filteredList"
+        v-for="item in list"
         :key="item.id"
         :data="item"
         :delayedDragging="delayedDragging"
@@ -85,13 +85,6 @@ export default {
   },
   computed: {
     ...mapGetters(["documentsListCategories", "documentsList"]),
-    filteredList() {
-      return this.documentsListCategories.filter((item) => {
-        return (item.title + item.description)
-          .toLowerCase()
-          .includes(this.search.toLowerCase());
-      });
-    },
     dragOptions() {
       return {
         animation: 0,
@@ -100,9 +93,9 @@ export default {
         ghostClass: "ghost",
       };
     },
-    listString() {
-      return JSON.stringify(this.list, null, 2);
-    },
+  },
+  created() {
+    this.list = this.documentsListCategories;
   },
   watch: {
     isDragging(newValue) {
@@ -115,6 +108,15 @@ export default {
       });
     },
     search(newValue) {
+      if (newValue) {
+        this.list = this.documentsListCategories.filter((item) => {
+          return (item.title + item.description)
+            .toLowerCase()
+            .includes(this.search.toLowerCase());
+        });
+      } else {
+        this.list = this.documentsListCategories;
+      }
       this.input_has_value = !!newValue;
     },
   },
